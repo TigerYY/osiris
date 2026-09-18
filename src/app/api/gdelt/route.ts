@@ -92,7 +92,7 @@ export async function GET() {
       headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600' },
     });
   } catch (error) {
-    console.error('[OSIRIS] GDACS fetch error:', error);
-    return NextResponse.json({ events: [], total: 0, error: 'GDACS unavailable' }, { status: 500 });
+    console.warn('[OSIRIS] GDACS fetch error:', error instanceof Error ? error.message : error);
+    return NextResponse.json({ events: [], total: 0, warning: 'GDACS unavailable' });
   }
 }

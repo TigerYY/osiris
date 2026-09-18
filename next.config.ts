@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   turbopack: {
+    root: __dirname,
     rules: {
       'maplibre-gl.mjs': {
         loaders: [`${__dirname}/tools/maplibre-url-loader.cjs`],

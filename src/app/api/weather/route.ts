@@ -261,7 +261,12 @@ export async function GET() {
     }
 
     if (!providerSucceeded) {
-      return NextResponse.json({ events: [], error: 'Failed to fetch weather data' }, { status: 500 });
+      return NextResponse.json({
+        events: [],
+        total: 0,
+        warning: 'Weather providers temporarily unreachable',
+        timestamp: new Date().toISOString(),
+      });
     }
 
     return NextResponse.json({
@@ -270,8 +275,13 @@ export async function GET() {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    console.error('Weather API error:', error);
-    return NextResponse.json({ events: [], error: 'Failed to fetch weather data' }, { status: 500 });
+    console.warn('Weather API error:', error instanceof Error ? error.message : error);
+    return NextResponse.json({
+      events: [],
+      total: 0,
+      warning: 'Failed to fetch weather data',
+      timestamp: new Date().toISOString(),
+    });
   }
 }
 

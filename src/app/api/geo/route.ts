@@ -85,11 +85,30 @@ export async function GET(request: NextRequest) {
       }
     } catch { /* fall through */ }
 
-    return NextResponse.json({ error: 'All geolocation providers failed' }, { status: 502 });
+    return NextResponse.json({
+      status: 'fail',
+      query: ip || 'auto',
+      lat: 20,
+      lon: 0,
+      city: 'Global',
+      regionName: 'Global',
+      country: 'Global',
+      isp: 'Unknown',
+      org: 'Unknown',
+      as: 'Unknown',
+      message: 'All geolocation providers failed, using fallback coordinates',
+    });
   } catch (e) {
-    return NextResponse.json(
-      { error: 'Failed to reach geolocation service', detail: e instanceof Error ? e.message : String(e) },
-      { status: 503 }
-    );
+    return NextResponse.json({
+      status: 'fail',
+      query: 'auto',
+      lat: 20,
+      lon: 0,
+      city: 'Global',
+      regionName: 'Global',
+      country: 'Global',
+      error: 'Failed to reach geolocation service',
+      detail: e instanceof Error ? e.message : String(e),
+    });
   }
 }
